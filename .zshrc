@@ -16,16 +16,14 @@ ack() {
     sudo grep --color=auto -Rn $* *
 }
 # Path to your oh-my-zsh installation.
-  export ZSH=~/.oh-my-zsh
+  export ZSH=/home/shyam.s/.oh-my-zsh
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="shyam"
+ZSH_THEME="xiong-chiamiov-plus"
 setopt correct
-setopt autocd
-setopt extended_glob
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
 
@@ -68,7 +66,14 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git history-substring-search zsh-syntax-highlighting)
+plugins=(git zsh-syntax-highlighting)
+
+autoload -U up-line-or-beginning-search
+autoload -U down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+bindkey "^[[A" up-line-or-beginning-search
+bindkey "^[[B" down-line-or-beginning-search
 
 # User configuration
 
@@ -101,7 +106,24 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias pup="puppet agent -t --configtimeout 900"
+alias pup="sudo puppet agent -t --configtimeout 900"
 alias ga="git add"
 alias gc="git commit -m"
 alias gpgp="git pull --rebase && git push"
+alias vim="sudo vim"
+alias s="ssh"
+alias psa="ps aux | grep "
+alias lal="sudo ls -CFalh --color=auto"
+alias crong="sudo crontab -l | grep "
+alias httpserver="python2 -m SimpleHTTPServer"
+alias netg='sudo netstat -tulanp | grep '
+alias nets='sudo netstat -tulanp'
+cl() { cd "$@" && lal; }
+alias hpup='cd ~/puppet'
+mypublicip() {
+    printf "dig +short @resolver1.opendns.com myip.opendns.com\ndig +short -t txt @ns1.google.com o-o.myaddr.l.google.com\ncurl -s ident.me\ncurl -s icanhazip.com" | xargs -L1 -P0 -I{} sh -c 'x=$({} | tr -d "\"";echo " | {}");echo $x'
+}
+mkcd() {
+    mkdir -p $1 && cd $1
+}
+
